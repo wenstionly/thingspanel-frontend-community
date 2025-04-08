@@ -99,7 +99,7 @@ watch(props, pr => {
                     @click="selectCard(item)"
                   >
                     <div class="text-center font-medium leading-8 dark:bg-zinc-900">
-                      {{ $t(item.title) }}
+                      {{ item.title }}
                     </div>
                     <div class="h-148px w-full">
                       <img :src="item.poster" alt="" style="width: 100%; height: 100%; object-fit: contain" />

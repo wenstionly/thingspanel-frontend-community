@@ -2179,7 +2179,21 @@ const local: App.I18n.Schema = {
     cancel: '取消',
     confirm: '确认',
     componentSettings: '组件设置',
-    basicSettings: '基础设置'
+    basicSettings: '基础设置',
+
+    acControl: {
+      name: '空调控制器',
+      devName: '设备名称',
+      envTemp: '室内温度',
+      power: '开关',
+      speed: '风速',
+      mode: '模式',
+      temp: '设定温度',
+      icon: '图标'
+    },
+    hMulti: {
+      name: '水平多数据显示器'
+    }
   }
 };
 

@@ -2185,7 +2185,21 @@ const local: App.I18n.Schema = {
     cancel: 'Cancel',
     confirm: 'Save',
     componentSettings: 'Component Settings',
-    basicSettings: 'Basic Settings'
+    basicSettings: 'Basic Settings',
+
+    acControl: {
+      name: 'Air Controller',
+      devName: 'Device Name',
+      envTemp: 'Environment Temperature',
+      power: 'Power',
+      speed: 'Speed',
+      mode: 'Mode',
+      temp: 'Set Temperature',
+      icon: 'Icon'
+    },
+    hMulti: {
+      name: 'Horizental Multi Data Display'
+    }
   }
 };
 

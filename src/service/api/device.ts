@@ -1,5 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import { request } from '../request';
+import type { DeviceSourceItem } from '@/components/panel/card';
 
 export default class Device {
   private readonly http: AxiosInstance;
@@ -405,4 +406,56 @@ export const deviceCustomCommandsIdList = async (paramsId: any) => {
 
 export const deviceProtocalServiceList = async (params: any) => {
   return await request.get<any>(`/service/plugin/select`, { params });
+};
+
+export const getDeviceValue = async (deviceSource: DeviceSourceItem) => {
+  const { deviceId, metricsId, metricsType } = deviceSource || {};
+  if (deviceId && metricsId) {
+    switch (metricsType) {
+      case 'telemetry': {
+        const rc = await telemetryDataCurrentKeys({ device_id: deviceId, keys: metricsId });
+        return rc?.data?.[0]?.value || null;
+      }
+      case 'attributes': {
+        const rc = await getAttributeDataSet({ device_id: deviceId });
+        const attributeData = rc.data.find(item => item.key === metricsId);
+        return attributeData?.value || null;
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  return null;
+};
+
+export const setDeviceValue = async (deviceSource: DeviceSourceItem, inputValue: any) => {
+  const { metricsType, deviceId, metricsId } = deviceSource || {};
+  if (!deviceId || !metricsId) return;
+
+  const obj = {
+    device_id: deviceId,
+    value: JSON.stringify({
+      [metricsId]: inputValue
+    })
+  };
+
+  let rc = null;
+  if (metricsType === 'attributes') {
+    rc = await attributeDataPub(obj);
+  } else if (metricsType === 'telemetry') {
+    rc = await telemetryDataPub(obj);
+  }
+  console.log("修改设备属性或遥测数据", deviceId, metricsType, metricsId, inputValue, rc);
+  return rc;
+};
+
+export const toRealValue: (deviceSource: DeviceSourceItem, inputValue: string) => any = (inputValue: string) => {
+  const dataType = deviceSource?.metricsDataType;
+  if (dataType === 'number') {
+    return Number.parseFloat(inputValue);
+  } else if (dataType === 'boolean') {
+    return Boolean(inputValue);
+  }
+  return inputValue;
 };
